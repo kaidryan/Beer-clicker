@@ -98,20 +98,62 @@ function brewBeer() {
 
 // Format large numbers for display
 function formatNumber(num) {
-    if (num >= 1e36) return (num / 1e36).toFixed(3) + 'S';
-    if (num >= 1e33) return (num / 1e33).toFixed(3) + 'Q';
-    if (num >= 1e30) return (num / 1e30).toFixed(3) + 'Q';
-    if (num >= 1e27) return (num / 1e27).toFixed(3) + 'T';
-    if (num >= 1e24) return (num / 1e24).toFixed(3) + 'T';
-    if (num >= 1e21) return (num / 1e21).toFixed(3) + 'B';
-    if (num >= 1e18) return (num / 1e18).toFixed(3) + 'B';
-    if (num >= 1e15) return (num / 1e15).toFixed(3) + 'M';
-    if (num >= 1e12) return (num / 1e12).toFixed(3) + 'M';
+    if (num >= 1e36) return (num / 1e36).toFixed(3) + 'Undec';
+    if (num >= 1e33) return (num / 1e33).toFixed(3) + 'Dec';
+    if (num >= 1e30) return (num / 1e30).toFixed(3) + 'Non';
+    if (num >= 1e27) return (num / 1e27).toFixed(3) + 'Oct';
+    if (num >= 1e24) return (num / 1e24).toFixed(3) + 'Sept';
+    if (num >= 1e21) return (num / 1e21).toFixed(3) + 'S';
+    if (num >= 1e18) return (num / 1e18).toFixed(3) + 'Qu';
+    if (num >= 1e15) return (num / 1e15).toFixed(3) + 'Q';
+    if (num >= 1e12) return (num / 1e12).toFixed(3) + 'T';
     if (num >= 1e9) return (num / 1e9).toFixed(3) + 'B';
     if (num >= 1e6) return (num / 1e6).toFixed(3) + 'M';
     if (num >= 1e3) return (num / 1e3).toFixed(3) + 'k';
     return num.toFixed(3);
 }
+// Function to save game data to a file
+function saveGame() {
+    const data = {
+        beers,
+        beersPerClick,
+        beersPerSecond,
+        upgrades
+    };
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'beerClickerSave.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+}
+
+// Function to load game data from a file
+function loadGame(event) {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    reader.onload = function() {
+        const data = JSON.parse(reader.result);
+        beers = data.beers || 0;
+        beersPerClick = data.beersPerClick || 1;
+        beersPerSecond = data.beersPerSecond || 0;
+        upgrades = data.upgrades || {};
+        updateDisplay();
+    };
+    reader.readAsText(file);
+}
+
+// Add event listeners for save and load buttons
+document.getElementById('saveButton').addEventListener('click', saveGame);
+document.getElementById('loadButtonInput').addEventListener('change', loadGame);
+
+// Add event listeners for save and load buttons
+document.getElementById('saveButton').addEventListener('click', saveGame);
+document.getElementById('loadButton').addEventListener('change', loadGame);
+
 
 // Game loop for passive beer production
 setInterval(() => {

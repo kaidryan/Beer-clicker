@@ -42,6 +42,23 @@
             background-color: #6c757d;
             cursor: not-allowed;
         }
+        #saveButton, #loadButton {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 1.2em;
+            cursor: pointer;
+            background-color: #17a2b8;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+        }
+        #loadButton {
+            background-color: #6c757d;
+            cursor: pointer;
+        }
+        #loadButtonInput {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -51,7 +68,10 @@
         <div id="beersPerClickDisplay">Beers per Click: 1</div>
         <div id="beersPerSecondDisplay">Beers per Second: 0</div>
         <button id="beerButton">Brew Beer</button>
-	<div id="upgrades"></div>
+        <div id="upgrades"></div>
+        <button id="saveButton">Save Game</button>
+        <input type="file" id="loadButtonInput" />
+        <label for="loadButtonInput" id="loadButton">Load Game</label>
     </div>
     <script src="beerClicker.js"></script>
 </body>
