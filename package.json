@@ -1,0 +1,11 @@
+{
+  "name": "beer-clicker-game",
+  "version": "1.0.0",
+  "description": "A simple beer clicker game",
+  "scripts": {
+    "start": "serve ."
+  },
+  "dependencies": {
+    "serve": "^14.0.1"
+  }
+}
