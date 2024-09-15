@@ -146,6 +146,60 @@ function loadGame(event) {
     reader.readAsText(file);
 }
 
+// Variables for random event
+let eventInterval;
+let gamblingButtonVisible = false; // Track if the gambling button has been shown
+
+// Function to start the random event timer
+function startRandomEvent() {
+    // Start the random event checking every minute
+    eventInterval = setInterval(triggerRandomEvent, 60000); // Every minute
+}
+
+// Function to trigger a random event
+function triggerRandomEvent() {
+    const gamblingText = document.getElementById('gamblingText');
+    const gambleButton = document.getElementById('gambleButton');
+    
+    if (Math.random() < 0.50) { // 50% chance for the event to occur
+        gambleButton.style.display = 'block'; // Show the gamble button
+        gamblingButtonVisible = true; // Mark the gambling button as visible
+    } else {
+        if (!gamblingButtonVisible) {
+            gambleButton.style.display = 'none'; // Ensure the gamble button is hidden if no event
+        }
+    }
+}
+
+// Function to handle gambling when button is clicked
+function gamble() {
+    const gamblingText = document.getElementById('gamblingText');
+    const gambleButton = document.getElementById('gambleButton');
+    
+    const isPositive = Math.random() < 0.6; // 60% chance to gain beers
+    if (isPositive) {
+        const reward = beers * 0.10; // 10% of the beer count
+        beers += reward;
+        gamblingText.innerText = `Gained ${formatNumber(reward)} beers from gambling!`;
+    } else {
+        const loss = beers * 0.06; // 6% of the beer count
+        beers -= loss;
+        gamblingText.innerText = `Lost ${formatNumber(loss)} beers from gambling!`;
+    }
+    updateDisplay();
+    
+    gamblingText.style.display = 'block'; // Show the result of the gamble
+    gambleButton.style.display = 'none'; // Hide the gamble button after clicking
+    
+    // Hide the gambling result after a brief time or until next event
+    setTimeout(() => {
+        gamblingText.style.display = 'none'; // Clear the result text
+    }, 15000); // 15 seconds
+}
+
+// Call this function when setting up the game
+startRandomEvent();
+
 // Add event listeners for save and load buttons
 document.getElementById('saveButton').addEventListener('click', saveGame);
 document.getElementById('loadButtonInput').addEventListener('change', loadGame);

@@ -48,3 +48,23 @@ h2 {
     display: none;
 }
 
+#event {
+    position: relative; /* Ensures the button is positioned relative to this container */
+    text-align: center; /* Centers text and inline elements horizontally */
+    margin-top: 20px; /* Adds some space between the Event title and the button */
+}
+
+#gambleButton {
+    padding: 10px 20px;
+    font-size: 1.5em;
+    cursor: pointer;
+    background-color: #ffc107;
+    color: #000;
+    border: none;
+    border-radius: 5px;
+    display: none; /* Initially hidden */
+    position: absolute;
+    left: 50%; /* Move the button to the middle horizontally */
+    transform: translateX(-50%); /* Shift the button back to fully center it */
+}
+
