@@ -1,11 +1,9 @@
 {
-  "name": "beer-clicker-game",
-  "version": "1.0.0",
-  "description": "A simple beer clicker game",
-  "scripts": {
-    "start": "serve ."
-  },
-  "dependencies": {
-    "serve": "^14.0.1"
-  }
+  "version": 2,
+  "builds": [
+    { "src": "index.html", "use": "@vercel/static" }
+  ],
+  "routes": [
+    { "src": "/(.*)", "dest": "index.html" }
+  ]
 }
