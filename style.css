@@ -1,0 +1,50 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #f4f4f4;
+}
+
+h1 {
+    color: #333;
+    font-size: 3em;
+}
+
+.beer-button {
+    margin: 10px;
+    padding: 15px;
+    font-size: 1.2em;
+    background-color: #ffcc00;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.beer-button:hover {
+    background-color: #ffdd33;
+}
+
+#beerCounter {
+    margin-top: 20px;
+    font-size: 1.5em;
+}
+
+h2 {
+    color: #333;
+    font-size: 2em;
+    margin-top: 20px;
+}
+
+#resources, #upgrades, #managers, #researchTree, #missions, #breweries, #prestigeSection, #rebirthSection {
+    margin-top: 20px;
+    font-size: 1.2em;
+}
+/* Add to your existing CSS */
+.gray-out {
+    color: gray;
+    cursor: not-allowed;
+    background-color: #f0f0f0; /* Optional: Change background color to indicate disabled state */
+}
+.hidden {
+    display: none;
+}
+
