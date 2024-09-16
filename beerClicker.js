@@ -139,21 +139,26 @@ function saveGame() {
     URL.revokeObjectURL(url);
 }
 
-// Function to load game data from a file
 function loadGame(event) {
     const file = event.target.files[0];
     const reader = new FileReader();
     reader.onload = function() {
-        const data = JSON.parse(reader.result);
-        beers = data.beers || 0;
-        beersPerClick = data.beersPerClick || 1;
-        beersPerSecond = data.beersPerSecond || 0;
-        upgrades = data.upgrades || {};
-        applyUpgrades();
-        updateDisplay();
+        try {
+            const data = JSON.parse(reader.result);
+            beers = data.beers || 0;
+            beersPerClick = data.beersPerClick || 1;
+            beersPerSecond = data.beersPerSecond || 0;
+            upgrades = data.upgrades || {};
+            updateDisplay();
+        } catch (e) {
+            console.error('Failed to parse game data', e);
+        }
     };
     reader.readAsText(file);
 }
+
+document.getElementById('loadButtonInput').addEventListener('change', loadGame);
+
 
 // Variables for random event
 let eventInterval;
@@ -220,7 +225,7 @@ setInterval(() => {
 // Add event listeners for buttons
 document.getElementById('beerButton').addEventListener('click', brewBeer);
 document.getElementById('saveButton').addEventListener('click', saveGame);
-document.getElementById('loadButton').addEventListener('change', loadGame);
+document.getElementById('loadButtonInput').addEventListener('change', loadGame);
 document.getElementById('gambleButton').addEventListener('click', gamble);
 
 setInterval(triggerRandomEvent, 60000); // Trigger random event every minute
