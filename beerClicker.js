@@ -20,8 +20,12 @@ let upgrades = {
     BeerMine: { level: 0, baseCost: 250000000, cost: 250000000, beersPerSecondBonus: 50000000 },
     BeerGovernment: { level: 0, baseCost: 1000000000, cost: 1000000000, beersPerSecondBonus: 100000000 },
     BeerEngine: { level: 0, baseCost: 5000000000, cost: 5000000000, beersPerSecondBonus: 500000000 },
+    BeerGalaxy: { level: 0, baseCost: 15000000000, cost: 15000000000, beersPerSecondBonus: 1000000000 },
+    BeerUniverse: { level: 0, baseCost: 50000000000, cost: 50000000000, beersPerSecondBonus: 5000000000 },
+    TimeDistorter: { level: 0, baseCost: 200000000000, cost: 200000000000, beersPerSecondBonus: 20000000000 },
+    HyperBrew: { level: 0, baseCost: 800000000000, cost: 800000000000, beersPerSecondBonus: 50000000000 },
+    UltimateKeg: { level: 0, baseCost: 5000000000000, cost: 5000000000000, beersPerSecondBonus: 200000000000 }
 };
-
 // Update display function
 function updateDisplay() {
     document.getElementById('beerCount').innerText = `Beers: ${formatNumber(beers)}`;
@@ -96,6 +100,9 @@ function brewBeer() {
     updateDisplay();
 }
 
+
+
+
 // Format large numbers for display
 function formatNumber(num) {
     if (num >= 1e36) return (num / 1e36).toFixed(3) + 'Undec';
@@ -112,6 +119,7 @@ function formatNumber(num) {
     if (num >= 1e3) return (num / 1e3).toFixed(3) + 'k';
     return num.toFixed(3);
 }
+
 // Function to save game data to a file
 function saveGame() {
     const data = {
@@ -141,6 +149,7 @@ function loadGame(event) {
         beersPerClick = data.beersPerClick || 1;
         beersPerSecond = data.beersPerSecond || 0;
         upgrades = data.upgrades || {};
+        applyUpgrades();
         updateDisplay();
     };
     reader.readAsText(file);
@@ -158,16 +167,15 @@ function startRandomEvent() {
 
 // Function to trigger a random event
 function triggerRandomEvent() {
-    const gamblingText = document.getElementById('gamblingText');
     const gambleButton = document.getElementById('gambleButton');
     
+    // Only show the gamble button if the event occurs
     if (Math.random() < 0.50) { // 50% chance for the event to occur
         gambleButton.style.display = 'block'; // Show the gamble button
         gamblingButtonVisible = true; // Mark the gambling button as visible
     } else {
-        if (!gamblingButtonVisible) {
-            gambleButton.style.display = 'none'; // Ensure the gamble button is hidden if no event
-        }
+        gambleButton.style.display = 'none'; // Ensure the gamble button is hidden if no event
+        gamblingButtonVisible = false; // Mark the gambling button as not visible
     }
 }
 
@@ -176,7 +184,7 @@ function gamble() {
     const gamblingText = document.getElementById('gamblingText');
     const gambleButton = document.getElementById('gambleButton');
     
-    const isPositive = Math.random() < 0.6; // 60% chance to gain beers
+    const isPositive = Math.random() < 0.60; // 60% chance to gain beers
     if (isPositive) {
         const reward = beers * 0.10; // 10% of the beer count
         beers += reward;
@@ -191,32 +199,28 @@ function gamble() {
     gamblingText.style.display = 'block'; // Show the result of the gamble
     gambleButton.style.display = 'none'; // Hide the gamble button after clicking
     
-    // Hide the gambling result after a brief time or until next event
+    // Hide the gambling result after a brief time
     setTimeout(() => {
         gamblingText.style.display = 'none'; // Clear the result text
     }, 15000); // 15 seconds
 }
 
+// Hide the gamble button initially
+document.getElementById('gambleButton').style.display = 'none';
+
 // Call this function when setting up the game
 startRandomEvent();
 
-// Add event listeners for save and load buttons
-document.getElementById('saveButton').addEventListener('click', saveGame);
-document.getElementById('loadButtonInput').addEventListener('change', loadGame);
-
-// Add event listeners for save and load buttons
-document.getElementById('saveButton').addEventListener('click', saveGame);
-document.getElementById('loadButton').addEventListener('change', loadGame);
-
-
-// Game loop for passive beer production
+// Set up the game loop
 setInterval(() => {
     beers += beersPerSecond;
     updateDisplay();
 }, 1000);
 
-// Initialize the game
-updateDisplay();
+// Add event listeners for buttons
+document.getElementById('beerButton').addEventListener('click', brewBeer);
+document.getElementById('saveButton').addEventListener('click', saveGame);
+document.getElementById('loadButton').addEventListener('change', loadGame);
+document.getElementById('gambleButton').addEventListener('click', gamble);
 
-// Event listener for the Brew Beer button
-document.getElementById('beerButton').onclick = brewBeer;
+setInterval(triggerRandomEvent, 60000); // Trigger random event every minute
